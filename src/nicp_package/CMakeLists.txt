@@ -9,6 +9,8 @@ project(nicp_package)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  tf2
+  tf2_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -113,10 +115,7 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-)
+include_directories(. /usr/include/eigen3  ${catkin_INCLUDE_DIRS})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -132,7 +131,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
  add_executable(cloud_broadcaster src/cloud_broadcaster.cpp)
-
+ add_executable(mapper src/mapper.cpp) 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -147,7 +146,9 @@ include_directories(
  target_link_libraries(cloud_broadcaster
    ${catkin_LIBRARIES}
  )
-
+ target_link_libraries(mapper
+   ${catkin_LIBRARIES}
+ )
 #############
 ## Install ##
 #############
