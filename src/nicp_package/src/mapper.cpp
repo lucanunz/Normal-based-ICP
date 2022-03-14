@@ -65,15 +65,12 @@ public:
     fixed_=moving_;
     moving_.clear();
     PointNormal2f p_to_add;
-    ContainerType added; //ln: used later on to check if a point in vec has been already assigned its normal.
-    added.reserve(vec.size());
+    
     //ln:
-    //structures with 2d points (Vector2f):vec, added, neighbors, neighborsp
+    //structures with 2d points (Vector2f):vec, neighbors, neighborsp
     //structures with 4d points (PointNormal2f): fixed_,moving_
     for(const auto& val : vec){
-      //ln: if this val was a neighbors of one prevoiusly considered, skip it.
-      if(std::find(added.begin(),added.end(),val) != added.end())
-        continue;
+
       neighborsp.clear();
       neighbors.clear();
 
@@ -87,20 +84,8 @@ public:
       computeMeanAndCovariance(mean,cov,neighbors.begin(),neighbors.end());
       const auto pn=smallestEigenVector(cov);
 
-      //ln: we add all the neighbors and thei normal to moving_. We add the neighb also to "added"
-      //because we want to consider them only once.
-      for(const auto& neighb : neighbors){
-
-      //ln: if a neighbor (neighb) of the current value (val) was also a neighbor of another value, 
-      //we already added it and we skip it
-        if(std::find(added.begin(),added.end(),neighb) != added.end())
-          continue;
-        
-        p_to_add.head<2>()=neighb;
-        p_to_add.tail<2>()=pn;
-        moving_.push_back(p_to_add);
-        added.push_back(neighb);
-      }
+      //gg: we add the point 'val' and its normal to moving_.
+      moving_.push_back(p_to_add);
     }
     //if moving==fixed it means the robot has not moved since last time, so useless to run icp.
     //if fixed.size() is 0 it means that this is the first message received, so we just have to wait for another message.
