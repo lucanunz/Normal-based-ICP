@@ -85,8 +85,8 @@ public:
       const auto pn=smallestEigenVector(cov);
 
       //gg: we add the point 'val' and its normal to moving_.
-      p_to_add.head<2>=val;
-      p_to_add.tail<2>=pn;
+      p_to_add.head<2>()=val;
+      p_to_add.tail<2>()=pn;
       moving_.push_back(p_to_add);
     }
     //if moving==fixed it means the robot has not moved since last time, so useless to run icp.
