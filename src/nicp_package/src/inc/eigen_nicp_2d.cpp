@@ -98,11 +98,17 @@ void NICP::optimizeCorrespondences() {
 }
 
 void NICP::run(int max_iterations){
+  //gg: stopping icp run if no substantial improvement is made for two consecutive iteration
+  //gg: done to speed up the icp process
   int current_iteration=0;
+  const float threshold = 0.00001;
+  float prev_chi = 0.f;
   while (current_iteration<max_iterations) {
     computeCorrespondences();
     //draw(cout);
     optimizeCorrespondences();
+    if (abs(_chi2_sum-prev_chi)<threshold)
+      break;
     ++current_iteration;
     //cerr << "Iteration: " << current_iteration;
     //cerr << " corr: " << numCorrespondences();
@@ -111,8 +117,9 @@ void NICP::run(int max_iterations){
     //cerr << " chi: " << _chi2_sum << endl;
     // char c;
     // cin >> c;
+    prev_chi=_chi2_sum;
   }
-  cerr << " chi: " << _chi2_sum << endl;
+  cerr << "chi: " << _chi2_sum << "; Iteration: " << current_iteration << endl;
 }
 
 void NICP::draw(std::ostream& os) {
