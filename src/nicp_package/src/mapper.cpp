@@ -3,7 +3,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <sensor_msgs/PointCloud.h>
 #include "nicp_package/VecPointsWn.h"
-#include "nicp_package/VecPointsWn.h"
+#include "nicp_package/PointWnormal.h"
 #include <iostream>
 #include <tf2/utils.h>
 #include "inc/eigen_nicp_2d.h"
@@ -33,20 +33,16 @@ public:
 
     transformStamped_=buffer_.lookupTransform("odom",src_frame,msg.header.stamp);
     float th=tf2::getYaw(transformStamped_.transform.rotation);
-    geometry_msgs::Point32 p;
     ContainerType vec;
     vec.reserve(msg.points.size());
 
     Vector2f p_eig;
     for(const auto& val : msg.points){
-      p.x = val.x*cosf(th)-val.y*sinf(th);
-      p.y = val.x*sinf(th)+val.y*cosf(th);
+      p_eig(0) = val.x*cosf(th)-val.y*sinf(th);
+      p_eig(1) = val.x*sinf(th)+val.y*cosf(th);
       
-      p.x += transformStamped_.transform.translation.x;
-      p.y += transformStamped_.transform.translation.y;
-
-      p_eig(0)=p.x;
-      p_eig(1)=p.y;
+      p_eig(0) += transformStamped_.transform.translation.x;
+      p_eig(1) += transformStamped_.transform.translation.y;
 
       vec.push_back(p_eig);
     }
@@ -64,6 +60,8 @@ public:
     //ln: when a new message arrives, the current "moving" becomes the fixed and in moving we put the new data
     fixed_=moving_;
     moving_.clear();
+    
+    moving_.reserve(msg.points.size());
     PointNormal2f p_to_add;
     
     //ln:
@@ -108,6 +106,7 @@ public:
         pwn.ny=point(3);
         message.moving.push_back(pwn);
       }
+      message.stamp=msg.header.stamp;
       icp_pub_.publish(message);
     }
   }
