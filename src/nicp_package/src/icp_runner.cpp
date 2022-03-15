@@ -10,8 +10,9 @@
 #include "math.h"
 #include <sensor_msgs/PointCloud.h>
 
-//ln: retrieving the quaternion from the isometry matrix.
-//Needed to broadcast a tf.
+//ln: retrieving the quaternion from the isometry matrix taking advantage
+//of the bidimensionality of the problem.  
+//The quaternion is needed to broadcast a tf.
 tf2::Quaternion getQ(const Eigen::Isometry2f& iso){
   float th=atan2f(iso(1,0),iso(0,0));
   tf2::Quaternion q(0,0,sinf(th/2),cosf(th/2));
@@ -48,6 +49,8 @@ public:
       point.x=p.x;
       point.y=p.y;
       point.z=0;
+      //gg:the cloud will not have also the normal of the points
+      //since they are not needed to build a map.
       cloud.points.push_back(point);
     }
     for(const auto& p:msg.moving){
