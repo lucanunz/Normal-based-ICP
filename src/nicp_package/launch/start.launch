@@ -1,0 +1,7 @@
+<launch>
+<node pkg="nicp_package" type="cloud_broadcaster" name="cloud_broadcaster" />
+<node pkg="nicp_package" type="normal_extractor" name="normal_extractor" />
+<node pkg="nicp_package" type="icp_runner" name="icp_runner" />
+<node pkg="nicp_package" type="map_builder" name="map_builder" />
+
+</launch>
