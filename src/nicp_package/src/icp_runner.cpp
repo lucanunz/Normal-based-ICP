@@ -38,7 +38,8 @@ public:
     //gg: the timestamp will be used by the node subscribed to icp_data
     //to apply the tf on the appropriate set of points.
     cloud.header.stamp=msg.stamp;
-
+    
+    //We populate the cloud with the "old" points.
     for(const auto& p:msg.fixed){
       pwn(0)=p.x;
       pwn(1)=p.y;
@@ -85,7 +86,9 @@ public:
     transformStamped.transform.rotation.y = transf_quat.y();
     transformStamped.transform.rotation.z = transf_quat.z();
     transformStamped.transform.rotation.w = transf_quat.w();
-
+    
+    //the tf contains the transformation needed to superpose
+    //the current moving cloud of points (new) to the current fixed one (old).
     br.sendTransform(transformStamped);
     pub_.publish(cloud);
   }

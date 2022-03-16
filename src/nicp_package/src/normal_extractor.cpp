@@ -12,12 +12,12 @@ static void removeLeadingCharacters(std::string &str, const char charToRemove) {
     str.erase(0, std::min(str.find_first_not_of(charToRemove), str.size() - 1));
 }
 
-class ric{
+class normal_ext{
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-  ric():
+  normal_ext():
     tf2_(buffer_){
-      sub_= n_.subscribe("/cloud", 100, &ric::callback,this);
+      sub_= n_.subscribe("/cloud", 100, &normal_ext::callback,this);
       icp_pub_ = n_.advertise<nicp_package::VecPointsWn> ("/icp_topic", 100, false);
     }
   using ContainerType = std::vector<Vector2f, Eigen::aligned_allocator<Vector2f> >;
@@ -87,7 +87,7 @@ public:
       p_to_add.tail<2>()=pn;
       moving_.push_back(p_to_add);
     }
-    //if moving==fixed it means the robot has not moved since last time, so useless to run icp.
+    //ln: if moving==fixed it means the robot has not moved since last time, so useless to run icp.
     //if fixed.size() is 0 it means that this is the first message received, so we just have to wait for another message.
     nicp_package::VecPointsWn message;
     nicp_package::PointWnormal pwn;
@@ -127,8 +127,8 @@ protected:
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "receiver");
-  ric r;
+  ros::init(argc, argv, "normal_ext");
+  normal_ext n_ex;
   ros::spin();
 
   return 0;
