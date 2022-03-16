@@ -133,7 +133,7 @@ include_directories(. /usr/include/eigen3  ${catkin_INCLUDE_DIRS})
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
  add_executable(cloud_broadcaster src/cloud_broadcaster.cpp)
- add_executable(mapper src/mapper.cpp src/inc/eigen_nicp_2d.cpp)
+ add_executable(normal_extractor src/normal_extractor.cpp src/inc/eigen_nicp_2d.cpp)
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -148,7 +148,7 @@ include_directories(. /usr/include/eigen3  ${catkin_INCLUDE_DIRS})
  target_link_libraries(cloud_broadcaster
    ${catkin_LIBRARIES}
  )
- target_link_libraries(mapper
+ target_link_libraries(normal_extractor
    ${catkin_LIBRARIES}
  )
 #############
