@@ -3,7 +3,7 @@
 #include <fstream>
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
-#include "transform/VecPointsWn.h"
+#include "nicp_package/VecPointsWn.h"
 #include <geometry_msgs/TransformStamped.h>
 #include <sensor_msgs/PointCloud.h>
 #include "inc/eigen_nicp_2d.h"
@@ -22,13 +22,12 @@ class icp_run{
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   icp_run(){
-    transf_story_.setIdentity();
     sub_= n_.subscribe("/icp_topic", 100, &icp_run::icpCallback,this);
     //ln: topic on which a pointCloud will be published. It will be used by another node
     //to build a map of the environment, using the tf that is published.
     pub_ = n_.advertise<sensor_msgs::PointCloud> ("/icp_data", 100, false);
   }
-  void icpCallback(const transform::VecPointsWn& msg){
+  void icpCallback(const nicp_package::VecPointsWn& msg){
     old_.clear();
     new_.clear();
     PointNormal2f pwn;
