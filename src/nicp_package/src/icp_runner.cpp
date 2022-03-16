@@ -71,6 +71,8 @@ public:
 
     transformStamped.header.stamp = msg.stamp;
 
+    //gg: the matrix computed by icp superposes the moving points to the fixed
+    //and all these points are expressed in the odom frame.
     transformStamped.header.frame_id = "odom";
 
     transformStamped.child_frame_id = "rotation";
@@ -87,7 +89,7 @@ public:
     transformStamped.transform.rotation.z = transf_quat.z();
     transformStamped.transform.rotation.w = transf_quat.w();
     
-    //the tf contains the transformation needed to superpose
+    //ln: the tf contains the transformation needed to superpose
     //the current moving cloud of points (new) to the current fixed one (old).
     br.sendTransform(transformStamped);
     pub_.publish(cloud);
