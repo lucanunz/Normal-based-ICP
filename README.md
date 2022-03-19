@@ -28,8 +28,8 @@ A `CMakeList.txt` file will be created in the current folder. Go back to
 
     catkin build -j
 
-and this will take approximately 20 seconds. In the top level directory
-the `build` and `devel` folders will be created, and to make the system
+This will take approximately 20 seconds.
+In the top level directory the `build` and `devel` folders will be created, and to make the system
 recognize our package we need to issue the following command to source
 the workspace:
 
