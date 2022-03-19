@@ -87,11 +87,10 @@ public:
       p_to_add.tail<2>()=pn;
       moving_.push_back(p_to_add);
     }
-    //ln: if moving==fixed it means the robot has not moved since last time, so useless to run icp.
-    //if fixed.size() is 0 it means that this is the first message received, so we just have to wait for another message.
+    //ln: if fixed.size() is 0 it means that this is the first message received, so we just have to wait for another message.
     nicp_package::VecPointsWn message;
     nicp_package::PointWnormal pwn;
-    if(fixed_.size() && moving_ != fixed_){
+    if(fixed_.size()){
       for(const auto& point : fixed_){
         pwn.x=point(0);
         pwn.y=point(1);
