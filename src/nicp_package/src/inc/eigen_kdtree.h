@@ -112,7 +112,7 @@ public:
       d_left=((*p_left)-query).squaredNorm();
     if (p_right)
       d_right=((*p_right)-query).squaredNorm();
-    if (p_left<p_right)
+    if (d_left<d_right)
       return p_left;
 
     return p_right;
