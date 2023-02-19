@@ -1,4 +1,4 @@
-# rp_project
+# Normal based ICP
 
 The project consists in a normal based matcher integrated in the ROS
 environment. The aim is to:
